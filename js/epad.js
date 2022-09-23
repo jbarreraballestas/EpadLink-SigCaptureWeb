@@ -101,6 +101,7 @@ function SignResponse(event) {
       let input = document.createElement('input');
       input.type = "hidden";
       input.value = imageData;
+      input.name = id;
       let contenedor = document.getElementById(id);
       contenedor.appendChild(input);
       contenedor.appendChild(canvas);
