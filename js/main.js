@@ -35,16 +35,30 @@ window.addEventListener('load', () => {
   }
 });
 
-function loadSigCaptureWeb(){
+function loadSigCaptureWeb(containerId){
   if (good) {
-    console.log('loadSigCaptureWeb');
+    height = 150;
+    width = 500;
+    let container = document.getElementById(containerId);
+    if (!container && !window.Swal) {
+      alert('No existe el contenerdor para la firma con id: '+containerId);return;
+    } else if(!container) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Ups...',
+        text: 'No existe el contenerdor para la firma con id: '+containerId,
+      });return;
+    }
+    let canvas = document.createElement('canvas');
+    canvas.height = height;
+    canvas.width = width;
+    canvas.getContext('2d').clearRect(0, 0, width, height);
     document.addEventListener('SigCaptureWeb_SignResponse', SignResponse, false);
+    var message = { "firstName": "", "lastName": "", "eMail": "", "location": "", "imageFormat": 1, "imageX": canvasObj.width, "imageY": canvasObj.height, "imageTransparency": true, "imageScaling": false, "maxUpScalePercent": 0.0, "rawDataFormat": "ENC", "minSigPoints": 25 };
+    var messageData = JSON.stringify(message);
     var element = document.createElement("SigCaptureWeb_ExtnDataElem");
     element.setAttribute("SigCaptureWeb_MsgAttribute", messageData);
-    document.documentElement.appendChild(element);
-    var evt = document.createEvent("Events");
-    evt.initEvent("SigCaptureWeb_SignStartEvent", true, false);
-    element.dispatchEvent(evt);
+    // container.append(canvas);
   }else{
     if (window.Swal) {
       Swal.fire({
